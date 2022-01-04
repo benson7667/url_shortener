@@ -1,6 +1,6 @@
 ## Get Started
 
-Create .env file, please refer to .env.example for the available values.
+Create .env file, please refer to .env.example for the available values. Replace MONGO_URI to your personal mongo url connection
 
 ```
 npm install
