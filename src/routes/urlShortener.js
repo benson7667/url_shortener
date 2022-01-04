@@ -1,5 +1,8 @@
 const express = require("express");
 const config = require("../config");
+const shortUrlModel = require("../models/shortUrlModel");
+
+const shortURLModel = require("../models/shortUrlModel");
 const { generateShortId } = require("../utils/generator");
 const { isValidURL } = require("../utils/url");
 
@@ -24,16 +27,37 @@ function urlShortener() {
       });
     }
 
-    const shortId = generateShortId(8);
+    // insert shortened url record into db
+    const newShortenedData = new shortUrlModel({
+      original_url: url,
+      shortened_url: `${config.shortenedDomain}/${generateShortId(8)}`,
+    });
+
+    const result = await newShortenedData.save();
 
     res.status(200).send({
-      url,
-      shortenUrl: `${config.shortenedDomain}/${shortId}`,
+      url: result.original_url,
+      shortenUrl: result.shortened_url,
     });
   });
 
-  router.route("/:shortId").get((req, res) => {
-    res.status(301).redirect("https://google.com");
+  router.route("/:shortId").get(async (req, res) => {
+    const shortId = req.params?.shortId;
+
+    if (!shortId) {
+      res.status(404).send("URL Not Found!");
+    }
+
+    const result = await shortURLModel.find({
+      shortened_url: `${config.shortenedDomain}/${shortId}`,
+    });
+
+    if (result.length) {
+      const [{ original_url }] = result;
+      return res.status(301).redirect(original_url);
+    }
+
+    return res.status(404).send("404 Not Found");
   });
 
   return router;
