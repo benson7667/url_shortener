@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "4a0935bc-d735-4e6a-b8e8-6481f8a01616",
+		"name": "url-shortener",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/newurl",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"url\": \"https://youtube.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/newurl",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"newurl"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/:shortId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/:shortId",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						":shortId"
+					],
+					"variable": [
+						{
+							"key": "shortId",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:4000"
+		}
+	]
+}
