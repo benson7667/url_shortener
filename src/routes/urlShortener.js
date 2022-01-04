@@ -12,14 +12,14 @@ function urlShortener() {
   router.route("/newurl").post(async (req, res) => {
     const url = req.body?.url;
 
-    // validate URL field is required
+    // validate URL field must be required
     if (!url)
       res.status(403).end({
         errorCode: "REQUEST/INVALID_PAYLOAD",
         errorMessage: "URL field is required",
       });
 
-    // validate url must be a valid URL
+    // validate URL must be a valid URL
     if (!isValidURL(url)) {
       res.status(403).send({
         errorCode: "REQUEST/INVALID_PAYLOAD",
@@ -48,10 +48,12 @@ function urlShortener() {
       res.status(404).send("URL Not Found!");
     }
 
+    // lookup db to find the record
     const result = await shortURLModel.find({
       shortened_url: `${config.shortenedDomain}/${shortId}`,
     });
 
+    // found data, and redirect to their original url
     if (result.length) {
       const [{ original_url }] = result;
       return res.status(301).redirect(original_url);
