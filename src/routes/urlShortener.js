@@ -14,14 +14,14 @@ function urlShortener() {
 
     // validate URL field must be required
     if (!url)
-      res.status(403).end({
+      return res.status(400).send({
         errorCode: "REQUEST/INVALID_PAYLOAD",
         errorMessage: "URL field is required",
       });
 
     // validate URL must be a valid URL
     if (!isValidURL(url)) {
-      res.status(403).send({
+      return res.status(400).send({
         errorCode: "REQUEST/INVALID_PAYLOAD",
         errorMessage: "Invalid URL",
       });
@@ -45,7 +45,7 @@ function urlShortener() {
     const shortId = req.params?.shortId;
 
     if (!shortId) {
-      res.status(404).send("URL Not Found!");
+      return res.status(404).send("URL Not Found!");
     }
 
     // lookup db to find the record
